@@ -1,0 +1,741 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0d0a">
+  <meta name="description" content="Pranshu — ECE student exploring code, electronics and creative technology.">
+  <title>Pranshu — Beyond the Frame</title>
+
+  <style>
+    :root {
+      --bg: #0b0d0a;
+      --panel: #141711;
+      --text: #f1f4e9;
+      --muted: #9ca495;
+      --lime: #c5ff48;
+      --border: #292e24;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    button { font: inherit; }
+
+    .container {
+      width: min(1120px, 90%);
+      margin: auto;
+    }
+
+    nav {
+      height: 78px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 5;
+    }
+
+    .logo {
+      font-weight: 900;
+      letter-spacing: -1px;
+      font-size: 1.15rem;
+    }
+
+    .logo span { color: var(--lime); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: .88rem;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover { color: var(--lime); }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--lime);
+      font-size: .75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 12px var(--lime);
+    }
+
+    /* HERO AND 3D WORLD */
+
+    .hero {
+      min-height: 650px;
+      min-height: min(790px, calc(100svh - 78px));
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      isolation: isolate;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      padding: 80px 0;
+    }
+
+    .eyebrow {
+      color: var(--lime);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-size: .76rem;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 7.5vw, 7rem);
+      letter-spacing: -.075em;
+      line-height: .9;
+      margin-bottom: 28px;
+    }
+
+    h1 span { color: var(--lime); }
+
+    .hero-copy > p {
+      color: var(--muted);
+      max-width: 480px;
+      font-size: 1.03rem;
+      margin-bottom: 30px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 19px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: .2s ease;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: var(--lime);
+      color: #11150b;
+      border-color: var(--lime);
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      border-color: var(--lime);
+    }
+
+    .hero-visual {
+      position: relative;
+      height: min(590px, 72vw);
+      min-height: 350px;
+      z-index: 1;
+    }
+
+    #world {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      outline: none;
+      touch-action: pan-y;
+    }
+
+    .visual-label {
+      position: absolute;
+      z-index: 2;
+      font-size: .68rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .label-top { top: 16%; right: 0; }
+    .label-bottom { bottom: 13%; left: 2%; }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 25px;
+      left: 0;
+      color: var(--muted);
+      font-size: .75rem;
+      letter-spacing: 2px;
+    }
+
+    /* SECTIONS */
+
+    section.content-section {
+      border-top: 1px solid var(--border);
+      padding: 90px 0;
+      scroll-margin-top: 20px;
+    }
+
+    .section-tag {
+      color: var(--lime);
+      font-size: .75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -.05em;
+      margin-bottom: 24px;
+    }
+
+    .muted { color: var(--muted); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 65px;
+      align-items: center;
+    }
+
+    .about-text p {
+      margin-bottom: 18px;
+      color: var(--muted);
+    }
+
+    .info-card, .skill-card, .interest-card {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 25px;
+      border-radius: 8px;
+    }
+
+    .info-card small {
+      color: var(--lime);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .info-card h3 {
+      margin: 15px 0 8px;
+      font-size: 1.4rem;
+    }
+
+    .info-card p { color: var(--muted); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 35px;
+    }
+
+    .skill-card {
+      transition: .25s;
+    }
+
+    .skill-card:hover {
+      border-color: var(--lime);
+      transform: translateY(-5px);
+    }
+
+    .skill-number {
+      color: var(--lime);
+      font-size: .8rem;
+    }
+
+    .skill-card h3 { margin: 18px 0 10px; }
+
+    .skill-card p {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 13px 5px 0 0;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .future-card {
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(ellipse at top right, #243018 0%, transparent 50%),
+        var(--panel);
+      padding: clamp(25px, 5vw, 55px);
+      border-radius: 10px;
+    }
+
+    .future-card p {
+      color: var(--muted);
+      max-width: 670px;
+    }
+
+    .contact-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 25px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 25px 0;
+      color: var(--muted);
+      font-size: .8rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    /* Reduce motion for visitors who prefer it */
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+
+    @media (max-width: 760px) {
+      .nav-links { gap: 14px; }
+      .nav-links a:nth-child(2) { display: none; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 50px;
+        min-height: auto;
+      }
+
+      .hero-copy { padding: 25px 0 0; }
+      .hero-visual { height: 390px; min-height: 0; }
+      .scroll-hint { display: none; }
+
+      .about-grid, .grid { grid-template-columns: 1fr; }
+      .about-grid { gap: 30px; }
+
+      section.content-section { padding: 65px 0; }
+    }
+
+    @media (max-width: 420px) {
+      .container { width: 92%; }
+      .nav-links { gap: 10px; font-size: .78rem; }
+      .hero-visual { height: 320px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <nav>
+      <a href="#home" class="logo">PRANSHU<span>.</span></a>
+
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#world-section">3D World</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <main>
+      <header class="hero" id="home">
+        <div class="hero-copy">
+          <div class="eyebrow">ECE Student · Curious Mind</div>
+
+          <h1>BEYOND<br>THE <span>FRAME.</span></h1>
+
+          <p>
+            I'm Pranshu — learning to turn ideas into reality through code,
+            electronics, creative experiments and technology.
+            This is my corner of the digital universe.
+          </p>
+
+          <div class="actions">
+            <a class="btn primary" href="#about">Explore my world ↗</a>
+            <a class="btn" href="#contact">Get in touch</a>
+          </div>
+        </div>
+
+        <div class="hero-visual" id="world-section">
+          <canvas id="world" aria-label="Interactive rotating 3D geometric object. Move your pointer to influence it."></canvas>
+          <div class="visual-label label-top">OBJECT 001 / INTERACTIVE</div>
+          <div class="visual-label label-bottom">MOVE YOUR CURSOR TO EXPLORE</div>
+        </div>
+
+        <div class="scroll-hint">SCROLL TO EXPLORE ↓</div>
+      </header>
+
+      <section class="content-section" id="about">
+        <div class="section-tag">01 / About me</div>
+
+        <div class="about-grid">
+          <div class="about-text">
+            <h2>Curiosity is my starting point.</h2>
+
+            <p>
+              I'm a first-year Electronics and Communication Engineering
+              student at SVIT Vasad. I'm beginning my journey into the
+              world of programming and hardware.
+            </p>
+
+            <p>
+              I've learned C and am learning C++ and Python. I'm also
+              interested in exploring Arduino, ESP32, Raspberry Pi,
+              websites, games and other creative technologies.
+            </p>
+
+            <p>
+              I don't have finished projects to show just yet. This portfolio
+              is a starting point for the things I'm going to learn and build.
+            </p>
+          </div>
+
+          <div class="info-card">
+            <small>Current chapter</small>
+            <h3>The beginning.</h3>
+            <p>
+              Learning fundamentals, experimenting with new ideas,
+              and preparing to build things that are genuinely useful.
+            </p>
+            <span class="tag">ECE</span>
+            <span class="tag">C Programming</span>
+            <span class="tag">Creative Tech</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="skills">
+        <div class="section-tag">02 / My toolkit</div>
+        <h2>Skills in progress.</h2>
+        <p class="muted">Every expert started by learning the basics.</p>
+
+        <div class="grid">
+          <article class="skill-card">
+            <div class="skill-number">01 — CODE</div>
+            <h3>Programming</h3>
+            <p>Building a foundation in programming and logical thinking.</p>
+            <span class="tag">C — Learned</span>
+            <span class="tag">C++ — Learning</span>
+            <span class="tag">Python — Learning</span>
+          </article>
+
+          <article class="skill-card">
+            <div class="skill-number">02 — HARDWARE</div>
+            <h3>Electronics</h3>
+            <p>Exploring how software can interact with the physical world.</p>
+            <span class="tag">Arduino</span>
+            <span class="tag">ESP32</span>
+            <span class="tag">Raspberry Pi</span>
+          </article>
+
+          <article class="skill-card">
+            <div class="skill-number">03 — EXPLORE</div>
+            <h3>Creative technology</h3>
+            <p>Interested in web experiences, games and new ways to create.</p>
+            <span class="tag">Web Design</span>
+            <span class="tag">Games</span>
+            <span class="tag">Experiments</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="future-card">
+          <div class="section-tag">03 / Future project · Not built yet</div>
+          <h2>My personal AI.</h2>
+
+          <p>
+            One of my biggest goals is to build a personal AI assistant
+            that I can customize myself. I want to learn how to connect
+            programming, useful tools, AI models and personalization
+            into one system.
+          </p>
+
+          <div class="actions" style="margin-top:25px">
+            <a class="btn primary" href="#contact">Follow the journey ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="contact">
+        <div class="section-tag">04 / Contact</div>
+
+        <div class="contact-row">
+          <div>
+            <h2>Have an interesting idea?</h2>
+            <p class="muted">Let's connect and talk about technology.</p>
+          </div>
+
+          <a class="btn primary"
+             href="mailto:pranshujadav40@gmail.com">
+            Email me ↗
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© <span id="year"></span> Pranshu</span>
+      <span>BEYOND THE FRAME — Always exploring.</span>
+      <a href="#home">Back to top ↑</a>
+    </footer>
+  </div>
+
+  <!-- Three.js 3D engine -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    const canvas = document.getElementById("world");
+    const visual = document.querySelector(".hero-visual");
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(
+      42,
+      visual.clientWidth / visual.clientHeight,
+      0.1,
+      100
+    );
+    camera.position.z = 5.5;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true
+    });
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(visual.clientWidth, visual.clientHeight);
+
+    // Main geometric object
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const geometry = new THREE.IcosahedronGeometry(1.15, 2);
+
+    const wireMaterial = new THREE.MeshBasicMaterial({
+      color: 0xc5ff48,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.85
+    });
+
+    const wireframe = new THREE.Mesh(geometry, wireMaterial);
+    group.add(wireframe);
+
+    // Inner glowing-looking wire sphere
+    const innerGeometry = new THREE.IcosahedronGeometry(0.65, 1);
+    const innerMaterial = new THREE.MeshBasicMaterial({
+      color: 0x8ebc2d,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.48
+    });
+
+    const inner = new THREE.Mesh(innerGeometry, innerMaterial);
+    group.add(inner);
+
+    // Orbital rings
+    const ringMaterial = new THREE.MeshBasicMaterial({
+      color: 0xc5ff48,
+      transparent: true,
+      opacity: 0.55
+    });
+
+    const ring1 = new THREE.Mesh(
+      new THREE.TorusGeometry(1.65, 0.006, 8, 140),
+      ringMaterial
+    );
+    ring1.rotation.x = 1.1;
+    ring1.rotation.y = 0.4;
+    group.add(ring1);
+
+    const ring2 = new THREE.Mesh(
+      new THREE.TorusGeometry(1.9, 0.004, 8, 140),
+      new THREE.MeshBasicMaterial({
+        color: 0x7d8c66,
+        transparent: true,
+        opacity: 0.55
+      })
+    );
+    ring2.rotation.x = 0.5;
+    ring2.rotation.y = -0.7;
+    group.add(ring2);
+
+    // Small points orbiting the object
+    const dots = [];
+    const dotGeometry = new THREE.SphereGeometry(0.035, 10, 10);
+
+    for (let i = 0; i < 12; i++) {
+      const dot = new THREE.Mesh(
+        dotGeometry,
+        new THREE.MeshBasicMaterial({ color: 0xc5ff48 })
+      );
+
+      const angle = (i / 12) * Math.PI * 2;
+      dot.userData.angle = angle;
+      dot.userData.radius = 1.85 + (i % 3) * 0.12;
+
+      group.add(dot);
+      dots.push(dot);
+    }
+
+    // Tiny background stars
+    const starPositions = [];
+    for (let i = 0; i < 260; i++) {
+      starPositions.push(
+        (Math.random() - 0.5) * 9,
+        (Math.random() - 0.5) * 9,
+        (Math.random() - 0.5) * 5 - 1
+      );
+    }
+
+    const starGeometry = new THREE.BufferGeometry();
+    starGeometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(starPositions, 3)
+    );
+
+    const stars = new THREE.Points(
+      starGeometry,
+      new THREE.PointsMaterial({
+        color: 0x9baa82,
+        size: 0.018,
+        transparent: true,
+        opacity: 0.65
+      })
+    );
+    scene.add(stars);
+
+    // Pointer interaction
+    let pointerX = 0;
+    let pointerY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    visual.addEventListener("pointermove", (event) => {
+      const rect = visual.getBoundingClientRect();
+
+      pointerX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+      pointerY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+
+      targetY = pointerX * 0.65;
+      targetX = pointerY * 0.4;
+    });
+
+    visual.addEventListener("pointerleave", () => {
+      targetX = 0;
+      targetY = 0;
+    });
+
+    // Resize the 3D scene to fit its container
+    function resize() {
+      const width = visual.clientWidth;
+      const height = visual.clientHeight;
+
+      if (!width || !height) return;
+
+      camera.aspect = width / height;
+      camera.position.x = width < 500 ? 0 : 0.15;
+      camera.position.z = width < 500 ? 6.1 : 5.5;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    // Animation loop
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    let previousTime = 0;
+
+    function animate(time) {
+      requestAnimationFrame(animate);
+
+      // Cap animation delta after a paused/background tab
+      const delta = previousTime
+        ? Math.min((time - previousTime) / 1000, 0.05)
+        : 0.016;
+      previousTime = time;
+
+      if (!reducedMotion) {
+        group.rotation.y += delta * 0.12;
+        group.rotation.x += delta * 0.045;
+        inner.rotation.y -= delta * 0.22;
+        ring1.rotation.z += delta * 0.08;
+        ring2.rotation.z -= delta * 0.05;
+        stars.rotation.z += delta * 0.003;
+
+        dots.forEach((dot) => {
+          dot.userData.angle += delta * 0.18;
+          const a = dot.userData.angle;
+          const r = dot.userData.radius;
+
+          dot.position.set(
+            Math.cos(a) * r,
+            Math.sin(a) * r * 0.65,
+            Math.sin(a * 2) * 0.35
+          );
+        });
+      }
+
+      group.rotation.y += (targetY - group.rotation.y) * 0.025;
+      group.rotation.x += (targetX - group.rotation.x) * 0.025;
+
+      renderer.render(scene, camera);
+    }
+
+    animate(0);
+  </script>
+</body>
+</html>
